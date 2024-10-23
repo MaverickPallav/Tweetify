@@ -66,3 +66,13 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+def tweet_search(request):
+    query = request.GET.get('q', '')
+
+    if query:
+        tweets = Tweet.objects.filter(text__icontains=query).order_by('-created_at')
+    else:
+        tweets = Tweet.objects.all().order_by('-created_at')
+
+    return render(request, 'tweet_list.html', {'tweets': tweets})
